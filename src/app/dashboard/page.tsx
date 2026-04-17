@@ -39,11 +39,11 @@ const actionCards = [
 export default function AppHome() {
     return (
         <main className='sm:ml-56 min-h-screen bg-white'>
-                <div className='relative flex items-center bg-gray-50 border-b
-                    border-gray-200 p-4 h-16'>
-                    <Sidebar />
-                    <h1 className='text-2xl font-semibold text-[#003967] whitespace-nowrap'>Olá, fulano</h1>
-                </div>
+            <div className='relative flex items-center bg-gray-50 border-b
+                border-gray-200 p-4 h-16'>
+                <Sidebar />
+                <h1 className='text-2xl font-semibold text-[#003967] whitespace-nowrap'>Olá, fulano</h1>
+            </div>
             <section className='p-4'>
                 <Card className='rounded-xl'>
                     <CardHeader>
