@@ -49,13 +49,13 @@ export default function AppHome() {
                     <CardHeader>
                         {/* Cards de ações rápidas */}
                         <div className='flex items-center justify-center text-lg sm:text-xl rounded-lg border-gray-200'>
-                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 w-full'>
+                            <div className='grid grid-cols-1 sm:grid-cols-2 gap-2 w-full'>
                                 {actionCards.map(({ href, icon: Icon, label}) => (
                                     <Link
                                     href={href}
                                     key={href}
                                     className='relative flex items-center gap-4 bg-[#2196F3] hover:bg-[#1976d2] rounded-xl
-                                    px-5 py-5 min-h-22 text-white transition-colors group'
+                                    px-5 min-h-22 text-white transition-colors group'
                                     >
                                         {/* ìcones */}
                                         <div className='shrink-0 w-15 h-15 flex items-center justify-center bg-white/15
@@ -64,7 +64,7 @@ export default function AppHome() {
                                         </div>
 
                                         {/* textos */}
-                                        <span className='text-[25px] font-medium leading-snug flex-1'>
+                                        <span className='text-[20px] font-medium leading-snug flex-1'>
                                             {label}
                                         </span>
 
