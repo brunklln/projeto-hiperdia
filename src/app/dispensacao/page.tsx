@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import {
   CheckCircle2,
-  CheckCircle2Icon,
   ChevronRight,
   ClipboardList,
   Pill,
@@ -34,6 +33,8 @@ export default function Dispensacao() {
   );
 
   const [prescricao, setPrescricao] = useState({
+    pacienteType: "",
+    pacienteValue: "",
     medicamento: "",
     viaAdministracao: "",
     quantidade: "",
@@ -44,6 +45,7 @@ export default function Dispensacao() {
     dataEntrega: "",
     quantidadeEntregue: "",
     proximaRetirada: "",
+    crm: ""
   });
 
   function handlePrescricaoSubmit(e: React.FormEvent) {
@@ -57,9 +59,9 @@ export default function Dispensacao() {
   }
 
   return (
-    <main className="sm:ml-56 min-h-screen bg-gray-50">
+    <main className="sm:ml-56 min-h-screen bg-white">
       {/* topbar */}
-      <div>
+      <div className='relative flex items-center bg-gray-50 border-b border-gray-200 p-4 h-16'>
         <Sidebar />
         <h1 className="text-xl font-semibold text-[#003967] whitespace-nowrap">
           Dispensação de Medicamentos
@@ -109,6 +111,52 @@ export default function Dispensacao() {
                 onSubmit={handlePrescricaoSubmit}
                 className="flex flex-col gap-5"
               >
+                {/* Paciente */}
+                <div>
+                  <Label className="text-sm font-medium text-[#003967]">
+                    Paciente
+                  </Label>
+                  <div className="flex gap-2">
+                    <select
+                      required
+                      className="h-10 rounded-lg border border-gray-300 px-3 text-sm text-gray-700
+                                        bg-white focus:outline-none focus:ring-[#1976d2] flex-1"
+                      value={prescricao.pacienteType}
+                      onChange={(e) =>
+                        setPrescricao((p) => ({
+                          ...p,
+                          pacienteType: e.target.value,
+                        }))
+                      }
+                    >
+                      <option value="">Selecione...</option>
+                      <option value="nome">Nome</option>
+                      <option value="cpf">CPF</option>
+                      <option value="cns">CNS</option>
+                    </select>
+                    <Input
+                      required
+                      placeholder={
+                        prescricao.pacienteType === "nome"
+                          ? "Digite o nome"
+                          : prescricao.pacienteType === "cpf"
+                          ? "Digite o CPF"
+                          : prescricao.pacienteType === "cns"
+                          ? "Digite o CNS"
+                          : "Selecione o tipo primeiro"
+                      }
+                      className="rounded-lg border-gray-300 h-10 flex-1"
+                      value={prescricao.pacienteValue}
+                      onChange={(e) =>
+                        setPrescricao((p) => ({
+                          ...p,
+                          pacienteValue: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+
                 {/* Medicamento */}
                 <div>
                   <Label className="text-sm font-medium text-[#003967]">
@@ -179,7 +227,7 @@ export default function Dispensacao() {
                 <div className="flex flex-col gap-3 pt-1">
                   {/* Uso continuo */}
                   <div
-                    className="felx items-center justify-between rounded-lg border
+                    className="flex items-center justify-between rounded-lg border
                                     border-gray-200 px-4 py-3"
                   >
                     <div>
@@ -325,6 +373,25 @@ export default function Dispensacao() {
                         setDispensacao((d) => ({
                           ...d,
                           proximaRetirada: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+
+                  {/* Médico responsável*/}
+                  <div className="flex flex-col gap-1.5">
+                    <Label className="text-sm font-medium text-[#003967]">
+                      Médico responsável
+                    </Label>
+                    <Input
+                      required
+                      placeholder="CRM"
+                      className="rounded-lg border-gray-300 h-10"
+                      value={dispensacao.crm}
+                      onChange={(e) =>
+                        setDispensacao((d) => ({
+                          ...d,
+                          crm: e.target.value,
                         }))
                       }
                     />
