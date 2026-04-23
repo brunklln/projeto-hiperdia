@@ -27,7 +27,6 @@ const viasAdministracao = [
 
 export default function Dispensacao() {
   const [usoContinuo, setUsoContinuo] = useState(false);
-  const [receita, setReceita] = useState(false);
   const [step, setStep] = useState<"prescricao" | "dispensacao" | "sucesso">(
     "prescricao",
   );
@@ -446,10 +445,9 @@ export default function Dispensacao() {
                     <Button 
                     onClick={() => {
                         setStep("prescricao")
-                        setPrescricao({ medicamento:"", viaAdministracao: "", quantidade:""})
-                        setDispensacao({ usuario: "", dataEntrega: "", quantidadeEntregue: "", proximaRetirada: ""})
+                        setPrescricao({ pacienteType: "", pacienteValue: "", medicamento: "", viaAdministracao: "", quantidade: ""})
+                        setDispensacao({ usuario: "", dataEntrega: "", quantidadeEntregue: "", proximaRetirada: "", crm: ""})
                         setUsoContinuo(false)
-                        setReceita(false)
                         }}
                         className="mt-2 bg-[#1976d2] hover:bg-[#1565c0] text-white rounded-lg h-10 px-8"    
                     >

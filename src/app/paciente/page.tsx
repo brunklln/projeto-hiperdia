@@ -57,9 +57,9 @@ export default function Paciente() {
                                 <CollapsibleContent className="absolute top-11 left-0 z-50 flex 
                                 flex-col items-start gap-2 pt-0 text-sm bg-white border
                                 border-gray-200 rounded-lg shadow-md p-2 min-w-40">
-                                    <Button variant="outline" size="sm" className="text-[18px] w-full">Nome</Button>
-                                    <Button variant="outline" size="sm" className="text-[18px] w-full">CPF</Button>
-                                    <Button variant="outline" size="sm" className="text-[18px] w-full">CNS</Button>
+                                    <Button variant="outline" size="sm" className="w-full">Nome</Button>
+                                    <Button variant="outline" size="sm" className="w-full">CPF</Button>
+                                    <Button variant="outline" size="sm" className="w-full">CNS</Button>
                                 </CollapsibleContent>
                             </Collapsible>
                             
