@@ -1,19 +1,47 @@
 "use client";
 
-import { useEffect, useRef, useState} from "react";
-import  Sidebar  from "@/components/sidebar";
+import { useEffect, useRef, useState } from "react";
+import Sidebar from "@/components/sidebar";
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Search, ChevronDown } from "lucide-react";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
 
 
 export default function Paciente() {
 
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchType, setSearchType] = useState("Nome");
+    const [searchResult, setSearchResult] = useState<any>(null);
+    const [hasSearched, setHasSearched] = useState(false);
+
+    const mockPatients = [
+        { nome: "João da Silva", cpf: "111.111.111-11", cns: "123456789012345" },
+        { nome: "Maria Oliveira", cpf: "222.222.222-22", cns: "987654321098765" }
+    ];
+
+    function handleSearch() {
+        setHasSearched(true);
+        if (!searchTerm.trim()) {
+            setSearchResult(null);
+            return;
+        }
+
+        const found = mockPatients.find(p => {
+            if (searchType === "Nome") return p.nome.toLowerCase().includes(searchTerm.toLowerCase());
+            if (searchType === "CPF") return p.cpf.replace(/\D/g, '') === searchTerm.replace(/\D/g, '');
+            if (searchType === "CNS") return p.cns.replace(/\D/g, '') === searchTerm.replace(/\D/g, '');
+            return false;
+        });
+
+        setSearchResult(found || null);
+    }
 
     useEffect(() => {
         function handleClickOutside(e: MouseEvent) {
@@ -38,45 +66,90 @@ export default function Paciente() {
             </div>
 
             <div className='relative flex flex-col p-4 min-h-fit'>
-                
+
                 {/* SEARCH E ÍCONES */}
                 <section className="w-full w-px-1/2 flex">
                     <Field orientation={"horizontal"}>
-                        <Input type="search" className="rounded-lg h-10 w-64 border-[#1976d2]"/>
+                        <Input
+                            type="search"
+                            className="rounded-lg h-10 w-64 border-[#1976d2]"
+                            placeholder={`Buscar por ${searchType}...`}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                        />
 
                         <div ref={ref}>
                             <Collapsible open={open} onOpenChange={setOpen} className="relative items-center">
                                 <CollapsibleTrigger asChild>
-                                    <Button className="shrink-0 w-10 h-10 flex gap-2 items-center
-                                    justify-center bg-transparent text-[#1976d2] rounded-full">
-                                        <ChevronDown className="text-[#1976d2] ml-auto group-data-state:open:rotate-180"/>
+                                    <Button
+                                        variant="outline"
+                                        className="h-10 px-4 flex gap-2 items-center justify-between border-[#1976d2] text-[#1976d2] hover:bg-blue-50 bg-transparent rounded-lg min-w-[110px]"
+                                    >
+                                        <span className="font-medium text-sm">{searchType}</span>
+                                        <ChevronDown className="h-4 w-4 ml-1 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                                     </Button>
                                 </CollapsibleTrigger>
 
                                 {/* Menu suspenso */}
-                                <CollapsibleContent className="absolute top-11 left-0 z-50 flex 
-                                flex-col items-start gap-2 pt-0 text-sm bg-white border
-                                border-gray-200 rounded-lg shadow-md p-2 min-w-40">
-                                    <Button variant="outline" size="sm" className="w-full">Nome</Button>
-                                    <Button variant="outline" size="sm" className="w-full">CPF</Button>
-                                    <Button variant="outline" size="sm" className="w-full">CNS</Button>
+                                <CollapsibleContent className="absolute top-12 left-0 z-50 flex 
+                                flex-col w-full min-w-[110px] bg-white border border-blue-100 
+                                rounded-lg shadow-lg overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                                    <button
+                                        className={`px-4 py-2.5 text-sm text-left transition-colors hover:bg-blue-50 ${searchType === 'Nome' ? 'bg-blue-50 text-[#1976d2] font-semibold' : 'text-gray-700 font-medium'}`}
+                                        onClick={() => { setSearchType("Nome"); setOpen(false); }}
+                                    >
+                                        Nome
+                                    </button>
+                                    <button
+                                        className={`px-4 py-2.5 text-sm text-left transition-colors hover:bg-blue-50 ${searchType === 'CPF' ? 'bg-blue-50 text-[#1976d2] font-semibold' : 'text-gray-700 font-medium'}`}
+                                        onClick={() => { setSearchType("CPF"); setOpen(false); }}
+                                    >
+                                        CPF
+                                    </button>
+                                    <button
+                                        className={`px-4 py-2.5 text-sm text-left transition-colors hover:bg-blue-50 ${searchType === 'CNS' ? 'bg-blue-50 text-[#1976d2] font-semibold' : 'text-gray-700 font-medium'}`}
+                                        onClick={() => { setSearchType("CNS"); setOpen(false); }}
+                                    >
+                                        CNS
+                                    </button>
                                 </CollapsibleContent>
                             </Collapsible>
-                            
+
                         </div>
-                        <Button className="shrink-0 w-10 h-10 flex gap-4 items-center
-                        justify-center rounded-full bg-transparent border-[#1976d2] sm:bg-transparent text-[#1976d2]">
-                            <Search />                            
+                        <Button
+                            onClick={handleSearch}
+                            className="shrink-0 w-10 h-10 flex gap-4 items-center
+                        justify-center rounded-full bg-transparent border-[#1976d2] sm:bg-transparent text-[#1976d2] hover:bg-blue-50">
+                            <Search />
                         </Button>
                     </Field>
                 </section>
 
-                {/* TERMINAR DE DESENVOLVER
-                FALTA CARD QUE MOSTRA OS DADOS DO PACIENTE PROCURADO*/}
-                
+                {/* RESULTADO DA BUSCA */}
+                {hasSearched && (
+                    <div className="mt-8 w-full max-w-lg">
+                        {searchResult ? (
+                            <Card className="border-l-4 border-l-[#1976d2] shadow-md overflow-hidden bg-white">
+                                <CardContent className="p-5 flex flex-col gap-1">
+                                    <h2 className="text-xl font-bold text-[#003967] uppercase">{searchResult.nome}</h2>
+                                    <div className="mt-3 flex flex-col gap-1">
+                                        <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">CPF:</span> {searchResult.cpf}</p>
+                                        <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">CNS:</span> {searchResult.cns}</p>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ) : (
+                            <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-200 font-medium">
+                                Nenhum paciente encontrado para esta busca.
+                            </div>
+                        )}
+                    </div>
+                )}
+
             </div>
 
-                {/* BOTÃO PARA CADASTRAR PACIENTE */}
+            {/* BOTÃO PARA CADASTRAR PACIENTE */}
             <div className="relative flex items-center justify-center">
                 <div className="p-4">
                     <section className="w-full min-h-screen">

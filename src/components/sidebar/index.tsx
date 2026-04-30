@@ -27,8 +27,8 @@ export default function AppSidebar() {
 
                 {/* Logo */}
                 <div className="flex items-center justify-center w-45">
-                    <Image 
-                        src="/logo_hiperdia.svg" 
+                    <Image
+                        src="/logo_hiperdia.svg"
                         alt="Logo do sistema"
                         width={120}
                         height={40}
@@ -51,7 +51,7 @@ export default function AppSidebar() {
                     ))}
                 </nav>
             </aside>
-            
+
             {/* Sidebar mobile */}
             <div className="sm:hidden flex sm:gap-4 sm:py-4 sm:pl-14">
                 <header className="sticky top-0 z-30 flex h-16 items-center px-4 border-b gap-4 sm:static
@@ -59,88 +59,91 @@ export default function AppSidebar() {
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button size="icon" variant="outline" className="sm:hidden rounded-full bg-transparent border-none text-[#003967]">
-                                <Menu className='w-5 h-5'/>
+                                <Menu className='w-5 h-5' />
                                 <span className="sr-only">Abrir</span>
                             </Button>
                         </SheetTrigger>
 
                         <SheetContent side="left" className="sm:max-w-xs">
                             <nav className="p-10 grid text-lg font-medium">
-                               
-                                {/* Ícone Menu da sidebar */}
-                                <Link 
-                                href="/dashboard"
-                                className="flex h-10 w-10 bg-[#003967] rounded-full
-                                items-center justify-center text-primary-foreground md:text-base"
-                                prefetch={false}
-                                >
-                                    <Menu className="h-5 w-5 transition-all"/>
-                                    <span className="sr-only md:not-sr-only">Menu</span>
-                                </Link>
+
+                                {/* Logo Mobile */}
+                                <div className="flex items-center justify-center mb-6">
+                                    <Link href="/dashboard" prefetch={false}>
+                                        <Image
+                                            src="/logo_hiperdia.svg"
+                                            alt="Logo do sistema"
+                                            width={130}
+                                            height={45}
+                                            priority
+                                            className="w-auto h-auto object-contain"
+                                        />
+                                    </Link>
+                                </div>
 
                                 {/* Ícone de ínicio da sidebar */}
-                                <Link 
-                                href="/dashboard"
-                                className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
+                                <Link
+                                    href="/dashboard"
+                                    className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
                                 hover:text-[#003967] text-[22px]"
-                                prefetch={false}
+                                    prefetch={false}
                                 >
-                                    <Home className="h-5 w-5 transition-all"/>
+                                    <Home className="h-5 w-5 transition-all" />
                                     <p>Início</p>
                                 </Link>
 
                                 {/* Ícone de dispensação da sidebar */}
-                                <Link 
-                                href="/dispensacao"
-                                className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
+                                <Link
+                                    href="/dispensacao"
+                                    className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
                                 hover:text-[#003967] text-[22px]"
-                                prefetch={false}
+                                    prefetch={false}
                                 >
-                                    <PillBottle className="h-5 w-5 transition-all"/>
+                                    <PillBottle className="h-5 w-5 transition-all" />
                                     Dispensação
                                 </Link>
 
                                 {/* Ícone de pacientes da sidebar */}
-                                <Link 
-                                href="/paciente"
-                                className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
+                                <Link
+                                    href="/paciente"
+                                    className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
                                 hover:text-[#003967] text-[22px]"
-                                prefetch={false}
+                                    prefetch={false}
                                 >
-                                    <Users className="h-5 w-5 transition-all"/>
+                                    <Users className="h-5 w-5 transition-all" />
                                     Pacientes
                                 </Link>
 
                                 {/* Ícone de estoque da sidebar */}
-                                <Link 
-                                href="/estoque"
-                                className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
+                                <Link
+                                    href="/estoque"
+                                    className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
                                 hover:text-[#003967] text-[22px]"
-                                prefetch={false}
+                                    prefetch={false}
                                 >
-                                    <ChartColumnStacked className="h-5 w-5 transition-all"/>
+                                    <ChartColumnStacked className="h-5 w-5 transition-all" />
                                     Estoque
                                 </Link>
 
                                 {/* Ícone de relatórios da sidebar */}
-                                <Link 
-                                href="/estoque/relatorio"
-                                className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
+                                <Link
+                                    href="/estoque/relatorio"
+                                    className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
                                 hover:text-[#003967] text-[22px]"
-                                prefetch={false}
+                                    prefetch={false}
                                 >
-                                    <FileChartColumn className="h-5 w-5 transition-all"/>
+                                    <FileChartColumn className="h-5 w-5 transition-all" />
                                     Relatórios
                                 </Link>
 
                                 {/* Ícone de configurações da sidebar */}
-                                <Link 
-                                href="#"
-                                className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
+                                <Link
+                                    href="#"
+                                    className="p-2 flex items-center gap-4 px-2.5 text-muted-[#9ACAE4]
                                 hover:text-[#003967] text-[22px]"
-                                prefetch={false}
+                                    prefetch={false}
                                 >
-                                    <Settings className="h-5 w-5 transition-all"/>
+                                    <Settings className="h-5 w-5 transition-all" />
                                     Configurações
                                 </Link>
                             </nav>

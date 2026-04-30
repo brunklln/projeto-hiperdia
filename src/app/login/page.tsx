@@ -7,11 +7,39 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export default function Login() {
-  function handleSubmit(e: React.FormEvent) {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // integrar autenticação aqui
+    setError(null)
+    setLoading(true)
+
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      })
+
+      if (res?.error) {
+        setError("Credenciais inválidas. Tente novamente.")
+      } else {
+        router.push("/dashboard")
+        router.refresh()
+      }
+    } catch (err) {
+      setError("Ocorreu um erro ao tentar fazer login.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -50,11 +78,20 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
 
+            {error && (
+              <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm text-center font-medium">
+                {error}
+              </div>
+            )}
+
             {/* E-mail */}
             <Input
               type="email"
               placeholder="E-mail"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
               className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400
               focus-visible:ring-2 focus-visible:ring-[#003967]"
             />
@@ -63,7 +100,10 @@ export default function Login() {
             <Input
               type="password"
               placeholder="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={loading}
               className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400
               focus-visible:ring-2 focus-visible:ring-[#003967]"
             />
@@ -71,12 +111,10 @@ export default function Login() {
             {/* Botão entrar */}
             <Button
               type="submit"
+              disabled={loading}
               className="w-full rounded-md bg-[#003967] hover:bg-[#002a4d] text-white font-medium h-10 mt-1"
             >
-              <Link 
-              href={"/dashboard"}>
-                Entrar
-              </Link>
+              {loading ? "Entrando..." : "Entrar"}
             </Button>
 
             {/* Esqueceu a senha */}
