@@ -130,15 +130,20 @@ export default function Paciente() {
                 {hasSearched && (
                     <div className="mt-8 w-full max-w-lg">
                         {searchResult ? (
-                            <Card className="border-l-4 border-l-[#1976d2] shadow-md overflow-hidden bg-white">
-                                <CardContent className="p-5 flex flex-col gap-1">
-                                    <h2 className="text-xl font-bold text-[#003967] uppercase">{searchResult.nome}</h2>
-                                    <div className="mt-3 flex flex-col gap-1">
-                                        <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">CPF:</span> {searchResult.cpf}</p>
-                                        <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">CNS:</span> {searchResult.cns}</p>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                            <Link href={`/paciente/perfil?nome=${encodeURIComponent(searchResult.nome)}`} className="block group">
+                                <Card className="border-l-4 border-l-[#1976d2] shadow-md overflow-hidden bg-white transition-all duration-200 hover:shadow-lg hover:border-l-blue-600 cursor-pointer group-hover:-translate-y-1">
+                                    <CardContent className="p-5 flex flex-col gap-1">
+                                        <div className="flex justify-between items-center w-full">
+                                            <h2 className="text-xl font-bold text-[#003967] uppercase group-hover:text-blue-700 transition-colors">{searchResult.nome}</h2>
+                                            <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">Ver perfil</span>
+                                        </div>
+                                        <div className="mt-3 flex flex-col gap-1">
+                                            <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">CPF:</span> {searchResult.cpf}</p>
+                                            <p className="text-sm text-gray-600"><span className="font-semibold text-gray-800">CNS:</span> {searchResult.cns}</p>
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </Link>
                         ) : (
                             <div className="p-4 bg-red-50 text-red-600 rounded-lg border border-red-200 font-medium">
                                 Nenhum paciente encontrado para esta busca.

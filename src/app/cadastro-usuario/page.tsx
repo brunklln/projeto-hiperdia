@@ -7,8 +7,13 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
+import { signIn } from "next-auth/react"
+import { useRouter } from "next/navigation"
 
 export default function CadastroUsuario() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
@@ -22,10 +27,39 @@ export default function CadastroUsuario() {
     numero: ""
   })
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    // integrar lógica de cadastro aqui
-    console.log("Dados do formulário:", formData)
+    setError(null)
+
+    if (formData.senha !== formData.confirmarSenha) {
+      setError("As senhas não coincidem.")
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      console.log("Dados do formulário:", formData)
+
+      // Simulação de cadastro e autenticação (em um app real haveria uma chamada de API de cadastro antes)
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: formData.email,
+        password: formData.senha,
+        nome: formData.nome, // Passando o nome caso a gente queira usar no mock
+      })
+
+      if (res?.error) {
+        setError("Ocorreu um erro ao tentar autenticar após o cadastro.")
+      } else {
+        router.push("/dashboard")
+        router.refresh()
+      }
+    } catch (err) {
+      setError("Ocorreu um erro no cadastro.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -42,6 +76,12 @@ export default function CadastroUsuario() {
           <h1 className="text-center text-2xl font-semibold text-[#003967]">Cadastre-se</h1>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {error && (
+              <div className="bg-red-50 text-red-500 p-3 rounded-md text-sm text-center font-medium">
+                {error}
+              </div>
+            )}
+
             {/* Nome */}
             <div>
               <Label htmlFor="nome" className="text-sm font-medium text-gray-700">Nome</Label>
@@ -51,6 +91,7 @@ export default function CadastroUsuario() {
                 type="text"
                 placeholder="Seu nome completo"
                 required
+                disabled={loading}
                 value={formData.nome}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -66,6 +107,7 @@ export default function CadastroUsuario() {
                 type="email"
                 placeholder="seu@email.com"
                 required
+                disabled={loading}
                 value={formData.email}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -81,6 +123,7 @@ export default function CadastroUsuario() {
                 type="password"
                 placeholder="Digite sua senha"
                 required
+                disabled={loading}
                 value={formData.senha}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -96,6 +139,7 @@ export default function CadastroUsuario() {
                 type="password"
                 placeholder="Confirme sua senha"
                 required
+                disabled={loading}
                 value={formData.confirmarSenha}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -109,6 +153,7 @@ export default function CadastroUsuario() {
                 id="atribuicao"
                 name="atribuicao"
                 required
+                disabled={loading}
                 value={formData.atribuicao}
                 onChange={handleChange}
                 className="rounded-md h-10 border border-blue-500 bg-white text-gray-700 focus-visible:ring-2 focus-visible:ring-[#003967] w-full px-3"
@@ -132,6 +177,7 @@ export default function CadastroUsuario() {
                 type="text"
                 placeholder="Número do registro profissional"
                 required
+                disabled={loading}
                 value={formData.registro}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -150,6 +196,7 @@ export default function CadastroUsuario() {
                 type="text"
                 placeholder="00000-000"
                 required
+                disabled={loading}
                 value={formData.cep}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -165,6 +212,7 @@ export default function CadastroUsuario() {
                 type="text"
                 placeholder="Nome do bairro"
                 required
+                disabled={loading}
                 value={formData.bairro}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -180,6 +228,7 @@ export default function CadastroUsuario() {
                 type="text"
                 placeholder="Nome da rua"
                 required
+                disabled={loading}
                 value={formData.rua}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -195,6 +244,7 @@ export default function CadastroUsuario() {
                 type="text"
                 placeholder="Número da residência"
                 required
+                disabled={loading}
                 value={formData.numero}
                 onChange={handleChange}
                 className="rounded-md h-10 bg-white border-blue-500 text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#003967]"
@@ -204,9 +254,10 @@ export default function CadastroUsuario() {
             {/* Botão cadastrar */}
             <Button
               type="submit"
+              disabled={loading}
               className="w-full rounded-md bg-[#003967] hover:bg-[#002a4d] text-white font-medium h-10 mt-2"
             >
-              Cadastrar
+              {loading ? "Cadastrando..." : "Cadastrar"}
             </Button>
           </form>
 

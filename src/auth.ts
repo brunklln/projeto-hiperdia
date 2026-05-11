@@ -7,21 +7,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Senha", type: "password" }
+        password: { label: "Senha", type: "password" },
+        nome: { label: "Nome", type: "text" }
       },
       async authorize(credentials) {
         // Mock simples de autenticação como solicitado
         if (credentials?.email === "admin@admin.com" && credentials?.password === "admin") {
           return { id: "1", name: "Administrador", email: "admin@admin.com" }
         }
-        
+
+        // Aceita qualquer usuário para fins de simulação de cadastro/login
+        if (credentials?.email && credentials?.password) {
+          return {
+            id: Math.random().toString(),
+            name: (credentials?.nome as string) || "Usuário Teste",
+            email: credentials.email as string
+          }
+        }
+
         // Retorna null caso as credenciais sejam inválidas
         return null;
       }
     })
   ],
   pages: {
-    signIn: '/login', // Redireciona para sua página customizada
+    signIn: '/login',
   },
   callbacks: {
     async jwt({ token, user }) {
