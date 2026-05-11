@@ -198,7 +198,7 @@ export default function PerfilPaciente() {
                 <h1 className="text-2xl font-semibold text-[#003967] whitespace-nowrap tracking-tight">Paciente</h1>
             </div>
 
-            {/* Suspense wrapper exigido pelo Next.js App Router ao usar useSearchParams */}
+
             <Suspense fallback={<div className="p-8 text-center text-gray-500">Carregando perfil...</div>}>
                 <PerfilContent />
             </Suspense>
